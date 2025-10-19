@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>final</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="final_files/libs/clipboard/clipboard.min.js"></script>
+<script src="final_files/libs/quarto-html/quarto.js"></script>
+<script src="final_files/libs/quarto-html/popper.min.js"></script>
+<script src="final_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="final_files/libs/quarto-html/anchor.min.js"></script>
+<link href="final_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="final_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="final_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="final_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="final_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="final_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="final_files/libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="final_files/libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="final_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+<link href="final_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="final_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<link href="final_files/libs/wordcloud2-0.0.1/wordcloud.css" rel="stylesheet">
+
+<script src="final_files/libs/wordcloud2-0.0.1/wordcloud2-all.js"></script>
+
+<script src="final_files/libs/wordcloud2-0.0.1/hover.js"></script>
+
+<script src="final_files/libs/wordcloud2-binding-0.2.1/wordcloud2.js"></script>
+
+<script src="final_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+<link href="final_files/libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+
+<script src="final_files/libs/leaflet-1.3.1/leaflet.js"></script>
+
+<link href="final_files/libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+
+<script src="final_files/libs/proj4-2.6.2/proj4.min.js"></script>
+
+<script src="final_files/libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+
+<link href="final_files/libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+
+<script src="final_files/libs/leaflet-binding-2.2.2/leaflet.js"></script>
+
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Spis treści</h2>
+   
+  <ul>
+  <li><a href="#najpopularniejsze-utwory-na-spotify" id="toc-najpopularniejsze-utwory-na-spotify" class="nav-link active" data-scroll-target="#najpopularniejsze-utwory-na-spotify">Najpopularniejsze utwory na Spotify</a>
+  <ul class="collapse">
+  <li><a href="#wprowadzenie" id="toc-wprowadzenie" class="nav-link" data-scroll-target="#wprowadzenie">Wprowadzenie</a>
+  <ul class="collapse">
+  <li><a href="#cel-projektu" id="toc-cel-projektu" class="nav-link" data-scroll-target="#cel-projektu">Cel projektu</a></li>
+  <li><a href="#znaczenie-tematu" id="toc-znaczenie-tematu" class="nav-link" data-scroll-target="#znaczenie-tematu">Znaczenie tematu</a></li>
+  <li><a href="#pozyskanie-danych" id="toc-pozyskanie-danych" class="nav-link" data-scroll-target="#pozyskanie-danych">Pozyskanie danych</a></li>
+  </ul></li>
+  <li><a href="#omówienie-platform" id="toc-omówienie-platform" class="nav-link" data-scroll-target="#omówienie-platform">Omówienie platform</a>
+  <ul class="collapse">
+  <li><a href="#spotify-1" id="toc-spotify-1" class="nav-link" data-scroll-target="#spotify-1"><img src="images/clipboard-984781814.png" class="img-fluid" width="28"> Spotify</a></li>
+  <li><a href="#youtube-1" id="toc-youtube-1" class="nav-link" data-scroll-target="#youtube-1"><img src="YouTube_2024.svg.png" class="img-fluid" width="43"> YouTube</a></li>
+  </ul></li>
+  <li><a href="#opis-baz-danych" id="toc-opis-baz-danych" class="nav-link" data-scroll-target="#opis-baz-danych">Opis baz danych</a>
+  <ul class="collapse">
+  <li><a href="#all_tracksspotify2_results_final" id="toc-all_tracksspotify2_results_final" class="nav-link" data-scroll-target="#all_tracksspotify2_results_final">all_tracksspotify2_results_final</a></li>
+  <li><a href="#id_counts_df_with_subscribers" id="toc-id_counts_df_with_subscribers" class="nav-link" data-scroll-target="#id_counts_df_with_subscribers">id_counts_df_with_subscribers</a></li>
+  </ul></li>
+  <li><a href="#wizualizacje" id="toc-wizualizacje" class="nav-link" data-scroll-target="#wizualizacje">Wizualizacje</a>
+  <ul class="collapse">
+  <li><a href="#gatunki-muzyczne" id="toc-gatunki-muzyczne" class="nav-link" data-scroll-target="#gatunki-muzyczne">Gatunki muzyczne</a></li>
+  <li><a href="#tempo" id="toc-tempo" class="nav-link" data-scroll-target="#tempo">Tempo</a></li>
+  <li><a href="#czas-trwania" id="toc-czas-trwania" class="nav-link" data-scroll-target="#czas-trwania">Czas trwania</a></li>
+  <li><a href="#wiek-artystów" id="toc-wiek-artystów" class="nav-link" data-scroll-target="#wiek-artystów">Wiek artystów</a></li>
+  <li><a href="#wytwórnie-muzyczne" id="toc-wytwórnie-muzyczne" class="nav-link" data-scroll-target="#wytwórnie-muzyczne">Wytwórnie muzyczne</a></li>
+  <li><a href="#featy" id="toc-featy" class="nav-link" data-scroll-target="#featy">Featy</a></li>
+  <li><a href="#explit" id="toc-explit" class="nav-link" data-scroll-target="#explit">Explit</a></li>
+  <li><a href="#pochodzenie-artystów" id="toc-pochodzenie-artystów" class="nav-link" data-scroll-target="#pochodzenie-artystów">Pochodzenie artystów</a></li>
+  <li><a href="#płeć-artysty" id="toc-płeć-artysty" class="nav-link" data-scroll-target="#płeć-artysty">Płeć artysty</a></li>
+  <li><a href="#ilość-utworów" id="toc-ilość-utworów" class="nav-link" data-scroll-target="#ilość-utworów">Ilość utworów</a></li>
+  <li><a href="#wyświetlenia-i-odsłuchania" id="toc-wyświetlenia-i-odsłuchania" class="nav-link" data-scroll-target="#wyświetlenia-i-odsłuchania">Wyświetlenia i odsłuchania</a></li>
+  <li><a href="#subskrybcje-i-miesięczne-odsłuchania" id="toc-subskrybcje-i-miesięczne-odsłuchania" class="nav-link" data-scroll-target="#subskrybcje-i-miesięczne-odsłuchania">Subskrybcje i miesięczne odsłuchania</a></li>
+  </ul></li>
+  <li><a href="#wnioski-4" id="toc-wnioski-4" class="nav-link" data-scroll-target="#wnioski-4">Wnioski</a></li>
+  <li><a href="#źródła" id="toc-źródła" class="nav-link" data-scroll-target="#źródła">Źródła</a></li>
+  <li><a href="#dane-kontaktowe" id="toc-dane-kontaktowe" class="nav-link" data-scroll-target="#dane-kontaktowe">Dane Kontaktowe</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="najpopularniejsze-utwory-na-spotify" class="level1">
+<h1>Najpopularniejsze utwory na Spotify</h1>
+<section id="wprowadzenie" class="level2">
+<h2 class="anchored" data-anchor-id="wprowadzenie">Wprowadzenie</h2>
+<p>W ostatnich latach rynek strumieniowego odtwarzania muzyki oraz platform wideo stał się jednym z najważniejszych elementów współczesnego przemysłu muzycznego. Spotify i YouTube odgrywają kluczową rolę w dystrybucji treści, dostarczając użytkownikom dostęp do ogromnej bazy utworów oraz wideoklipów. Wraz z rosnącą liczbą użytkowników na obu platformach, znaczenie analizy popularności muzyki na tych kanałach staje się coraz bardziej istotne.</p>
+<section id="cel-projektu" class="level3">
+<h3 class="anchored" data-anchor-id="cel-projektu">Cel projektu</h3>
+<p>Celem niniejszego projektu jest wizualizacja danych dotyczących popularności muzyki na Spotify do 24.10.2024 roku, w tym najczęściej odtwarzanych utworów, artystów oraz gatunków muzycznych. Następnie wyniki te zostaną porównane z danymi dotyczącymi popularności tych samych utworów i artystów na platformie YouTube, uwzględniając liczbę wyświetleń oraz liczbę subskrybcji. Porównanie tych dwóch platform pozwoli na lepsze zrozumienie różnic w preferencjach użytkowników Spotify i YouTube.</p>
+</section>
+<section id="znaczenie-tematu" class="level3">
+<h3 class="anchored" data-anchor-id="znaczenie-tematu">Znaczenie tematu</h3>
+<p>Wnioski wyciągnięte z porównania mogą być użyteczne zarówno dla artystów, jak i dla przedstawicieli przemysłu muzycznego, dostarczając cennych informacji o strategiach promocji oraz preferencjach odbiorców na dwóch największych platformach multimedialnych.</p>
+</section>
+<section id="pozyskanie-danych" class="level3">
+<h3 class="anchored" data-anchor-id="pozyskanie-danych">Pozyskanie danych</h3>
+<section id="źródła-danych" class="level4">
+<h4 class="anchored" data-anchor-id="źródła-danych">Źródła danych</h4>
+<p>Dla realizacji projektu wybrano 1000 utworów, które zostały wybrane na podstawie rankingu ze strony Kworb.net, znanej z agregacji najpopularniejszych utworów na różnych platformach muzycznych. Wyselekcjonowane piosenki stały się podstawą do dalszych analiz w ramach projektu.</p>
+</section>
+<section id="spotify" class="level4">
+<h4 class="anchored" data-anchor-id="spotify">Spotify</h4>
+<p>Na podstawie listy 1000 utworów stworzono playlistę na Spotify, aby umożliwić dokładne pobranie danych dotyczących tych piosenek. Do pobrania szczegółowych danych użyto pakietu SpotifyR w języku R, który umożliwia komunikację z API Spotify. Dzięki temu uzyskano dostęp do takich informacji jak:</p>
+<ul>
+<li><p>track.name</p></li>
+<li><p>track.album.name</p></li>
+<li><p>track.album.release_date</p></li>
+<li><p>track.duration_min</p></li>
+<li><p>track.feat.artists</p></li>
+<li><p>track.artist</p></li>
+<li><p>artist_explit</p></li>
+<li><p>monthly_listeners</p></li>
+</ul>
+</section>
+<section id="youtube" class="level4">
+<h4 class="anchored" data-anchor-id="youtube">YouTube</h4>
+<p>Do pozyskania danych na temat wyświetleń, dat publikacji oraz innych informacji niedostępnych bezpośrednio w API YouTube, wykorzystano narzędzie Selenium.</p>
+<ul>
+<li><p>youtube_views</p></li>
+<li><p>youtube_subscribers</p></li>
+</ul>
+</section>
+<section id="wikipedia" class="level4">
+<h4 class="anchored" data-anchor-id="wikipedia">Wikipedia</h4>
+<p>Wykorzystana ją jako źródło informacji o artystach, które nie były dostępne w API Spotify ani innych źródłach. Dane te uzupełniały kontekst i pomagały w analizie demografii artystów.</p>
+<ul>
+<li><p>track.genre</p></li>
+<li><p>track.label</p></li>
+<li><p>artist_country</p></li>
+<li><p>artist_gender</p></li>
+<li><p>artist_type</p></li>
+</ul>
+</section>
+<section id="songbpm" class="level4">
+<h4 class="anchored" data-anchor-id="songbpm">SongBPM</h4>
+<p>Narzędzie specjalizujące się w analizie tempa utworów (BPM), posłużyło do uzyskania szczegółowych informacji o charakterystyce muzycznej utworów. Dane zostały pobrane poprzez scrapowanie, co pozwoliło na zautomatyzowane zebranie brakujących metryk dla wybranych utworów.</p>
+<ul>
+<li>tempo</li>
+</ul>
+</section>
+<section id="kworb" class="level4">
+<h4 class="anchored" data-anchor-id="kworb">Kworb</h4>
+<p>Dostarczył nie tylko listę 1000 najpopularniejszych utworów, ale również szczegółowe dane na temat liczby odtworzeń na Spotify, które nie były dostępne bezpośrednio w API Spotify. Dzięki temu serwisowi możliwe było wzbogacenie analizy o metryki popularności, takie jak całkowita liczba streamów dla każdego utworu, co pozwoliło na dokładniejsze porównanie obu platform.</p>
+<ul>
+<li>play_count</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="omówienie-platform" class="level2">
+<h2 class="anchored" data-anchor-id="omówienie-platform">Omówienie platform</h2>
+<section id="spotify-1" class="level3">
+<h3 class="anchored" data-anchor-id="spotify-1"><img src="images/clipboard-984781814.png" class="img-fluid" width="28"> Spotify</h3>
+<p>Jedna z najpopularniejszych aplikacji streamingowych, która umożliwia słuchanie milionów utworów muzycznych, podcastów i innych treści audio. Jest także platformą, na którą artyści z całego świata wrzucają swoje utwory, by dotrzeć do szerokiej publiczności. Spotify działa w modelu darmowym z reklamami oraz płatnym (Premium), oferującym brak reklam, lepszą jakość dźwięku i tryb offline. Platforma jest dostępna na wielu urządzeniach, rewolucjonizując sposób, w jaki ludzie słuchają muzyki na całym świecie.</p>
+</section>
+<section id="youtube-1" class="level3">
+<h3 class="anchored" data-anchor-id="youtube-1"><img src="YouTube_2024.svg.png" class="img-fluid" width="43"> YouTube</h3>
+<p>Jedna z największych platform wideo na świecie, która odgrywa kluczową rolę w dystrybucji muzyki i promocji artystów. Jest miejscem, gdzie twórcy mogą publikować swoje utwory, teledyski oraz materiały dodatkowe, takie jak koncerty czy vlogi, docierając do globalnej publiczności. Dzięki funkcji subskrypcji kanałów artyści mogą budować społeczność fanów, a YouTube zapewnia narzędzia do monetyzacji treści, m.in. reklamy i subskrypcje premium. Platforma wspiera także promocję nowych twórców dzięki algorytmom rekomendacji. YouTube to kluczowe narzędzie dla artystów, łączące wideo i muzykę, które rewolucjonizuje sposób, w jaki muzyka jest odkrywana i konsumowana.</p>
+</section>
+</section>
+<section id="opis-baz-danych" class="level2">
+<h2 class="anchored" data-anchor-id="opis-baz-danych">Opis baz danych</h2>
+<section id="all_tracksspotify2_results_final" class="level3">
+<h3 class="anchored" data-anchor-id="all_tracksspotify2_results_final">all_tracksspotify2_results_final</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(255, 0, 51, 255) !important;"></th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(255, 0, 51, 255) !important;">Typ.danych</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(255, 0, 51, 255) !important;">Opis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">track.name</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Tytuł utworu</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">track.album.name</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Tytuł albumu na którym był utwór</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">track.album.release_date</td>
+<td style="text-align: left; font-style: italic;">POSIXct</td>
+<td style="text-align: left;">Data wypuszczenia utworu</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">track.duration_min</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Czas trwania utworu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">track.feat.artists</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Nazwa artysty na feacie</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">track.artist</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Nazwa głównego artysty</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">artist_age_at_release</td>
+<td style="text-align: left; font-style: italic;">numeric</td>
+<td style="text-align: left;">Wiek artysty podczas wypuszczenia utworu</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">track.label</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Label pod którym był wypuszczony utwór</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">tempo</td>
+<td style="text-align: left; font-style: italic;">numeric</td>
+<td style="text-align: left;">Wartość BPM</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">artist_explicit</td>
+<td style="text-align: left; font-style: italic;">logical</td>
+<td style="text-align: left;">Czy wsytępują przekleństwa?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">fixed_genre</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Gatunek muzyczny utworu</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">play_count</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Ilość oodtworzeń na Spotify</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">youtube_views</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Ilość odtworzeń na YouTube</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="id_counts_df_with_subscribers" class="level3">
+<h3 class="anchored" data-anchor-id="id_counts_df_with_subscribers">id_counts_df_with_subscribers</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(255, 0, 51, 255) !important;"></th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(255, 0, 51, 255) !important;">Typ.danych</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(255, 0, 51, 255) !important;">Opis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">artist_name</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Nazwa Artysty</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">count</td>
+<td style="text-align: left; font-style: italic;">numeric</td>
+<td style="text-align: left;">Ilość utworów danego artysty w zestawieniu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">artist_country_filtered</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Kraj pochodzenia</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">artist_gender</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Płeć</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">artist_type</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Typ artysty, czy grupa czy solo</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">monthly_listeners</td>
+<td style="text-align: left; font-style: italic;">numeric</td>
+<td style="text-align: left;">Miesięczna liczba słuchaczy na Spotify</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(30, 215, 96, 255) !important;">youtube_subscribers</td>
+<td style="text-align: left; font-style: italic;">character</td>
+<td style="text-align: left;">Ilość subskrybcji na YouTube</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+</section>
+<section id="wizualizacje" class="level2">
+<h2 class="anchored" data-anchor-id="wizualizacje">Wizualizacje</h2>
+<section id="gatunki-muzyczne" class="level3">
+<h3 class="anchored" data-anchor-id="gatunki-muzyczne">Gatunki muzyczne</h3>
+<p>Muzyka jest niezwykle zróżnicowaną dziedziną sztuki, która obejmuje szeroki wachlarz gatunków, od tradycyjnych po nowoczesne, od klasycznych po eksperymentalne. Gatunki muzyczne to kategorie, w których klasyfikowane są utwory muzyczne na podstawie podobieństw w strukturze, brzmieniu, technikach wykonawczych, a także kontekście kulturowym i historycznym. Współczesne środowisko muzyczne jest szczególnie bogate w różnorodność, co znajduje odzwierciedlenie w licznych subkulturach, mieszankach stylów oraz fuzjach różnych tradycji muzycznych.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="wordcloud2 html-widget html-fill-item" id="htmlwidget-24efe8e59d517f05c9ba" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-24efe8e59d517f05c9ba">{"x":{"word":["pop","reggaeton","r&b","hip hop","trap","dance-pop","synth-pop","electropop","pop rock","edm"],"freq":[211,112,110,98,93,65,56,55,55,51],"fontFamily":"Segoe UI","fontWeight":"bold","color":["#1ed760","#ff0033","#ff6633","#1f77b4","#33b5ff","#99c2ff","#ffcc00","#ff80bf","#ff6666","#66cc66"],"minSize":0,"weightFactor":0.4265402843601896,"backgroundColor":"#222222","gridSize":0,"minRotation":-0.7853981633974483,"maxRotation":0.7853981633974483,"shuffle":true,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+</div>
+</div>
+<p>Wykres przedstawia dominację gatunku „pop” oraz jego podgatunków, takich jak „dance-pop”, „synth-pop” i „electropop”. Dużą popularnością cieszą się także „hip hop”, „trap” oraz „reggaeton”, co wskazuje na znaczenie muzyki latynoskiej i hip-hopowej. Widoczne są również „R&amp;B” i „EDM”, które pozostają istotnymi gatunkami. Mniejsza rola „pop rock” sugeruje jego ograniczoną popularność. Ogólnie wykres podkreśla różnorodność współczesnej muzyki z wyraźną dominacją popu.</p>
+<iframe src="Plot1.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Wykres przedstawia średnią liczbę odtworzeń dziesięciu najpopularniejszych gatunków muzycznych na Spotify. Największą popularnością cieszy się chamber pop. Gospel pop zajmuje drugie miejsce, co wskazuje na wysokie zainteresowanie tymi bardziej melodyjnymi i emocjonalnymi gatunkami. W środkowej części zestawienia znajdują się industrial pop, progressive rock i trap-pop. Gatunki te balansują pomiędzy niszowością a szerokim odbiorem, co pozwala im utrzymać względnie stabilną popularność. Na niższych pozycjach plasują się post-grunge, pop rap, arena rock i stoner rock. Alt-pop, z najmniejszą średnią liczbą odtworzeń, wskazuje na swoją bardziej alternatywną i niszową naturę, która przyciąga mniejszą grupę odbiorców. Podsumowując, wykres pokazuje, że melodyjne i uniwersalne gatunki, takie jak chamber pop i gospel pop, dominują na Spotify, podczas gdy bardziej alternatywne style, jak alt-pop i stoner rock, mają ograniczoną publiczność. Wskazuje to na znaczenie dostępności i emocjonalnego przekazu w kształtowaniu popularności muzyki na tej platformie.</p>
+<iframe src="Plot2.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Wykres pokazuje, że klasyczne gatunki, takie jak arena rock i progressive rock, cieszą się największą popularnością na YouTube. Arena rock przyciąga szeroką publiczność dzięki chwytliwym melodiom i energetycznym występom, podczas gdy progressive rock zdobywa fanów swoją złożonością i artystycznym podejściem. Gatunki takie jak stoner rock, chamber pop i trap-pop zajmują środkowe pozycje, z umiarkowaną popularnością. Ich charakter łączy elementy niszowe z mainstreamem, co pozwala im dotrzeć do różnych grup odbiorców. Z kolei post-grunge, pop rap i gospel pop mają niższe wyniki, co sugeruje bardziej ograniczoną grupę słuchaczy, zależną od specyficznych zainteresowań kulturowych i artystów. Najmniej popularne są alt-pop i industrial pop, których niszowy i eksperymentalny charakter przyciąga węższą publiczność. Ogólnie, wykres ukazuje przewagę bardziej tradycyjnych i uniwersalnych gatunków nad stylami alternatywnymi, podkreślając rolę masowego odbioru w kształtowaniu popularności muzyki.</p>
+<section id="wnioski" class="level4">
+<h4 class="anchored" data-anchor-id="wnioski">Wnioski</h4>
+<p>Współczesny krajobraz muzyczny ukazuje dominację gatunku „pop” i jego podgatunków, takich jak „dance-pop”, „synth-pop” i „electropop”, które cieszą się ogromną popularnością na różnych platformach. Gatunki takie jak „hip hop”, „trap” i „reggaeton” podkreślają znaczenie muzyki latynoskiej i hip-hopowej, a „R&amp;B” i „EDM” wciąż odgrywają istotną rolę. Na Spotify największą popularnością cieszą się melodyjne i emocjonalne gatunki, takie jak chamber pop i gospel pop, co wskazuje na znaczenie dostępności i emocjonalnego przekazu. Gatunki takie jak industrial pop, progressive rock czy trap-pop zajmują środkowe pozycje, balansując między niszowością a szerokim odbiorem, podczas gdy bardziej alternatywne style, jak alt-pop czy stoner rock, przyciągają mniejszą grupę odbiorców. Z kolei na YouTube największą popularność zdobywają klasyczne gatunki, takie jak arena rock i progressive rock, które przyciągają szeroką publiczność dzięki chwytliwym melodiom, energii i artystycznemu podejściu. Gatunki niszowe, takie jak alt-pop czy industrial pop, mają bardziej ograniczoną publiczność, co podkreśla różnice w preferencjach użytkowników różnych platform. Ogólnie rzecz biorąc, analiza wskazuje na dominację melodyjnych i uniwersalnych gatunków, przy jednoczesnym zachowaniu miejsca dla bardziej eksperymentalnych i alternatywnych stylów, co podkreśla różnorodność współczesnej muzyki i wpływ platform na kształtowanie jej popularności.</p>
+</section>
+</section>
+<section id="tempo" class="level3">
+<h3 class="anchored" data-anchor-id="tempo">Tempo</h3>
+<p>Tempo jest jednym z podstawowych elementów muzycznych, który odnosi się do szybkości wykonywania utworu. W muzyce, tempo określa, jak szybko lub wolno ma być grana dana kompozycja. Jest to kluczowy czynnik wpływający na charakter utworu, jego energię oraz emocjonalny ładunek. Tempo nie tylko definiuje dynamikę wykonania, ale również pomaga muzykom w synchronizacji, tworząc wyraźne odniesienie do rytmu i frazowania. W tradycyjnej notacji muzycznej tempo często oznaczane jest przy pomocy słów, takich jak <em>allegro</em> (szybko), <em>adagio</em> (wolno) czy <em>andante</em> (w tempie spacerowym), a także za pomocą dokładnych wartości liczbowych, takich jak liczba uderzeń na minutę (BPM - beats per minute). Tempo ma ogromne znaczenie nie tylko w klasycznej muzyce, ale także w innych gatunkach, takich jak jazz, rock, czy muzyka elektroniczna. Zmieniając tempo, artyści mogą wywołać różne reakcje emocjonalne u słuchaczy, wprowadzając ich w stan relaksu, napięcia lub radości.</p>
+<iframe src="Plot3.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Różne gatunki muzyczne różnią się zarówno pod względem średniego tempa, jak i liczby odtworzeń. Gatunki takie jak reggaeton, house, EDM, tropical house czy dance charakteryzują się wyższym tempem (powyżej 120 BPM) i jednocześnie cieszą się dużą popularnością, co widać po wysokiej liczbie odtworzeń. Szczególnie gatunki pop i jego odmiany, takie jak dance-pop, electropop czy synth-pop, osiągają jednocześnie umiarkowane do wysokiego tempa oraz bardzo wysoką liczbę odtworzeń, co wskazuje na ich globalną popularność. Z kolei wolniejsze gatunki, takie jak soul, R&amp;B czy soft rock, mają niższe średnie tempo (poniżej 120 BPM) i są odtwarzane rzadziej. Mniej popularne gatunki, takie jak regional mex, christmas czy folk-pop, charakteryzują się zróżnicowanym tempem, ale liczba ich odtworzeń pozostaje stosunkowo niska w porównaniu do dominujących gatunków tanecznych i popowych. Podsumowując, szybkie i energetyczne gatunki muzyczne dominują pod względem popularności, podczas gdy wolniejsze style oraz mniej mainstreamowe gatunki pozostają w tyle zarówno w liczbie odtworzeń, jak i w tempie. Widać wyraźną zależność między dynamiką utworów a ich globalnym zasięgiem.</p>
+<iframe src="Plot4.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Na podstawie wykresu można zauważyć, że utwory z Indii, Meksyku czy Stanów Zjednoczonych cieszą się największą popularnością, co widać po wysokiej średniej liczbie odtworzeń. W tych krajach, niezależnie od tempa muzyki, utwory przyciągają dużą liczbę słuchaczy. Z kolei kraje takie jak Tajlandia czy Uganda mają znacznie mniejszą liczbę odtworzeń, co może wynikać z mniejszej globalnej rozpoznawalności ich artystów. Jeśli chodzi o tempo utworów, widać, że kraje takie jak Rosja czy Nowa Zelandia mają muzykę o wyższym średnim tempie. Natomiast muzyka z Jamajki czy Barbadosu charakteryzuje się wolniejszym tempem, co może być związane z lokalnymi gatunkami muzycznymi, takimi jak reggae czy calypso. Nie widać jednak wyraźnej zależności między tempem utworów a ich popularnością. To sugeruje, że o sukcesie muzyki decydują inne czynniki, takie jak globalny zasięg artystów, gatunki muzyczne czy różnice kulturowe w preferencjach słuchaczy.</p>
+<section id="wnioski-1" class="level4">
+<h4 class="anchored" data-anchor-id="wnioski-1">Wnioski</h4>
+<p>Analiza tempa i popularności utworów ujawnia, że szybkie, energetyczne gatunki, takie jak reggaeton, house, EDM czy dance-pop, cieszą się największym zainteresowaniem słuchaczy, osiągając zarówno wysokie średnie tempo (powyżej 120 BPM), jak i dużą liczbę odtworzeń. Gatunki te dominują globalnie, co podkreśla ich uniwersalny charakter i zdolność do przyciągania szerokiego grona odbiorców. Z kolei wolniejsze style, takie jak soul, R&amp;B czy reggae, oraz mniej popularne gatunki, takie jak folk-pop czy muzyka świąteczna, mają mniejszy globalny zasięg, co znajduje odzwierciedlenie w niższej liczbie odtworzeń. Analizując dane geograficzne, widać, że muzyka z krajów takich jak Indie, Meksyk czy Stany Zjednoczone cieszy się wyjątkową popularnością, niezależnie od tempa, co można przypisać globalnemu zasięgowi artystów z tych regionów. Natomiast kraje o mniejszym zasięgu, takie jak Tajlandia czy Uganda, mają niższą liczbę odtworzeń, co może wynikać z ograniczonej rozpoznawalności ich muzyki na światowej scenie. Mimo że w niektórych krajach, takich jak Rosja czy Nowa Zelandia, tempo muzyki jest wyższe, a w innych, takich jak Jamajka czy Barbados, niższe, nie można wskazać jednoznacznego związku między tempem a popularnością. Popularność utworów wydaje się bardziej zależna od takich czynników jak gatunek, globalny wpływ artystów i kulturowe preferencje słuchaczy.</p>
+</section>
+</section>
+<section id="czas-trwania" class="level3">
+<h3 class="anchored" data-anchor-id="czas-trwania">Czas trwania</h3>
+<p>Czas trwania utworu muzycznego jest istotnym elementem, który zmienia się w zależności od gatunku i preferencji słuchaczy. Współczesne utwory popowe są zazwyczaj krótsze, co jest dostosowane do wymagań platform streamingowych i preferencji konsumentów. Natomiast w gatunkach takich jak rock czy muzyka klasyczna, utwory często mają dłuższą formę z bardziej złożoną strukturą. Trendy w muzyce, takie jak popularność remiksów w muzyce elektronicznej, również wpływają na długość utworów. Co więcej, platformy streamingowe zmieniają preferencje słuchaczy, którzy częściej słuchają krótszych piosenek, co sprawia, że artyści coraz częściej tworzą utwory dostosowane do tych wymagań. Długość utworu to więc nie tylko aspekt techniczny, ale także kulturowy, zależny od aktualnych trendów w muzyce oraz preferencji słuchaczy.</p>
+<iframe src="Plot5.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Wykres przedstawia rozkład długości trwania utworów muzycznych. Można zauważyć, że większość utworów mieści się w przedziale od około 2 minut i 30 sekund do 4 minut. Rozkład ten jest symetryczny, z największą koncentracją w okolicach 3 minut i 30 sekund, co wskazuje, że jest to typowa długość dla większości piosenek. Warto zauważyć, że bardzo krótkie utwory (poniżej 2 minut) oraz długie utwory (powyżej 5 minut) są rzadkością, co jest widoczne w wąskich końcach rozkładu. Oznacza to, że standardowe długości utworów są silnie ugruntowane w określonych ramach czasowych, co może wynikać z przyzwyczajeń słuchaczy lub specyfiki przemysłu muzycznego. Podsumowując, utwory o długości od 3 do 4 minut są najbardziej typowe, co czyni je dominującym formatem w muzyce popularnej. Dłuższe i krótsze utwory są mniej popularne, co sugeruje pewien standard w tworzeniu muzyki dostosowany do preferencji słuchaczy.</p>
+</section>
+<section id="wiek-artystów" class="level3">
+<h3 class="anchored" data-anchor-id="wiek-artystów">Wiek artystów</h3>
+<p>Wiek artystów to istotny aspekt w analizie muzyki, który może oferować ciekawe wnioski na temat ich kariery, stylu twórczości, a także związku z popularnością ich utworów. Wiek artysty w kontekście muzyki może wpłynąć na wybory artystyczne, preferencje odbiorców oraz sukces komercyjny. W szczególności, młodsze pokolenia artystów mogą być bardziej skłonne do eksperymentowania z nowymi gatunkami muzycznymi czy technologiami, podczas gdy starsi artyści często odnoszą się do tradycji lub mają już wykształcony własny styl. Analizując zależność między wiekiem artysty a liczbą odtworzeń utworów, możemy zbadać, czy młodsze, świeże talenty zyskują większą popularność na platformach streamingowych, takich jak Spotify, czy też czy starsi artyści utrzymują wysoki poziom zainteresowania swoją twórczością. Badanie tego typu może również wskazać na zmieniające się preferencje słuchaczy oraz na to, jak wiek artysty może wpływać na sposób, w jaki odbiorcy reagują na różne gatunki i style muzyczne.</p>
+<iframe src="Plot6.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Zależność między wiekiem artysty a liczbą odtworzeń na Spotify wskazuje, że młodsi artyści, szczególnie w przedziale wiekowym do 30 lat, cieszą się największą popularnością. Widać wyraźne skupisko wysokiej liczby odtworzeń wśród artystów z tej grupy wiekowej. Wyjątki, takie jak pojedyncze punkty z ekstremalnie wysoką liczbą odtworzeń, również znajdują się w tej kategorii. Wraz ze wzrostem wieku artystów liczba odtworzeń wyraźnie spada, co ilustruje nachylenie linii trendu w dół. Dla artystów powyżej 50. roku życia liczba odtworzeń jest znacznie niższa, a dane wskazują na coraz rzadsze występowanie wyższych wyników w miarę przesuwania się na osi wieku. Artyści w wieku powyżej 70 lat mają marginalny udział w dużych liczbach odtworzeń. Zjawisko to może wynikać z większej obecności młodych artystów na platformach streamingowych oraz zmieniających się trendów muzycznych, które sprzyjają nowszym wykonawcom. Popularność artystów starszych jest natomiast bardziej stabilna, ale nie osiąga takich szczytów, jak w przypadku młodszych twórców.</p>
+<iframe src="Plot7.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Na podstawie przedstawionych danych można zauważyć, że liczba odtworzeń utworów muzycznych różni się w zależności od daty ich wydania. Utwory wydane przed rokiem 2000 charakteryzują się raczej stabilnym, umiarkowanym wzrostem liczby odtworzeń, z pojedynczymi przypadkami wyraźnie popularniejszych nagrań. Natomiast po roku 2000 widoczny jest gwałtowny wzrost rozproszenia punktów, co sugeruje, że popularność utworów stała się bardziej zróżnicowana. W szczególności, od około 2010 roku widać wyraźny skupisko utworów o relatywnie dużej liczbie odtworzeń, a niektóre z nich osiągają wyjątkowo wysokie wyniki. Linia trendu w postaci przerywanej czerwonej linii wskazuje ogólną tendencję wzrostu liczby odtworzeń w miarę zbliżania się do współczesności, mimo pewnego spłaszczenia tej tendencji w najnowszych latach.</p>
+<section id="wnioski-2" class="level4">
+<h4 class="anchored" data-anchor-id="wnioski-2">Wnioski</h4>
+<p>Analiza popularności muzyki wskazuje na silne zależności między wiekiem artystów, datą wydania utworów a ich liczbą odtworzeń na Spotify. Młodsi artyści, zwłaszcza ci poniżej 30. roku życia, dominują pod względem popularności, przyciągając największą liczbę słuchaczy. Ich sukces można przypisać lepszemu dostosowaniu do współczesnych trendów muzycznych i obecności na platformach streamingowych. Wraz ze wzrostem wieku artystów liczba odtworzeń wyraźnie spada, co jest szczególnie widoczne w przypadku twórców powyżej 50. roku życia, którzy mają mniejszy udział w dużych wynikach odtworzeń. Podobna zależność dotyczy daty wydania utworów. Starsze utwory, zwłaszcza te sprzed roku 2000, mają stabilne, choć umiarkowane liczby odtworzeń, z nielicznymi wyjątkami. Natomiast po roku 2000 widoczny jest gwałtowny wzrost zróżnicowania popularności utworów, z wyraźnym skupiskiem nagrań o wysokich wynikach od około 2010 roku. Linia trendu potwierdza ogólną tendencję wzrostu liczby odtworzeń w miarę zbliżania się do współczesności, choć w ostatnich latach tempo tego wzrostu zaczyna maleć. Dane te podkreślają, że sukces muzyki jest ściśle powiązany z aktualnymi trendami, młodszymi artystami i nowoczesnymi formami dystrybucji, jak platformy streamingowe.</p>
+</section>
+</section>
+<section id="wytwórnie-muzyczne" class="level3">
+<h3 class="anchored" data-anchor-id="wytwórnie-muzyczne">Wytwórnie muzyczne</h3>
+<p>Wytwórnie muzyczne odgrywają kluczową rolę w przemyśle muzycznym, nie tylko jako organizacje odpowiedzialne za produkcję i dystrybucję muzyki, ale także jako potężne instytucje, które kształtują trendy i wyznaczają ścieżki kariery dla artystów. Wytwórnie posiadają ogromny wpływ na to, jakie utwory trafiają do szerokiej publiczności i jak są promowane. Dzięki strategicznemu zarządzaniu swoimi zasobami, globalnym zasięgiem i olbrzymim budżetom marketingowym, potrafią przekształcać artystów w międzynarodowe gwiazdy, co ma nieoceniony wpływ na rozwój całej branży muzycznej.</p>
+<iframe src="Plot8.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Na podstawie przedstawionych danych można zauważyć, że największą liczbę piosenek reprezentuje wytwórnia Universal, która odpowiada za 352 utwory. Następnie, na drugim miejscu, znajduje się kategoria “Inne” z 249 piosenkami, co wskazuje na znaczący udział mniejszych, niezależnych wytwórni. Wytwórnia Sony zajmuje trzecie miejsce z liczbą 239 utworów, a Warner zamyka stawkę z 160 piosenkami. Rozkład ten sugeruje dominację dużych wytwórni muzycznych, takich jak Universal i Sony, które łącznie stanowią znaczną część analizowanej liczby utworów. Niemniej jednak udział mniejszych wytwórni, reprezentowany przez kategorię “Inne”, również odgrywa istotną rolę, wskazując na różnorodność źródeł muzyki na rynku.</p>
+</section>
+<section id="featy" class="level3">
+<h3 class="anchored" data-anchor-id="featy">Featy</h3>
+<p>W muzyce, termin “feat.” (skrót od “featuring”) odnosi się do artysty, który pojawia się jako gość w utworze głównego wykonawcy. Tego rodzaju współprace są często wykorzystywane do przyciągnięcia uwagi nowych słuchaczy i rozszerzenia zasięgu artystów. Współczesna muzyka popularna obfituje w utwory, które są wynikiem współpracy różnych artystów, a takie kolaboracje mogą znacząco wpłynąć na sukces piosenki. Artysta występujący gościnnie często wnosi unikalny styl, głos lub umiejętności, które uzupełniają muzykę głównego wykonawcy.</p>
+<iframe src="Plot9.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Analiza średniej liczby odtworzeń piosenek pokazuje, że utwory bez udziału gościnnych artystów stanowią 53% całości, podczas gdy utwory z udziałem gości (z feat.) osiągają 47%. Różnica między tymi kategoriami nie jest znaczna, co sugeruje, że obecność gościnnych artystów nie ma jednoznacznego wpływu na popularność piosenek. Obie grupy są niemal równomiernie reprezentowane, co może wynikać z różnorodnych preferencji słuchaczy oraz specyfiki promowania utworów w obu kategoriach.</p>
+</section>
+<section id="explit" class="level3">
+<h3 class="anchored" data-anchor-id="explit">Explit</h3>
+<p>W kontekście muzyki, termin “explicit” odnosi się do utworów zawierających treści, które mogą być uznane za nieodpowiednie dla niepełnoletnich słuchaczy. Zawartość ta może obejmować wulgaryzmy, agresję, treści seksualne, przemoc, narkotyki czy inne kontrowersyjne tematy. W wyniku tego, utwory oznaczone jako explicit są często filtrowane na platformach streamingowych, a ich dostępność może być ograniczona w zależności od lokalnych regulacji prawnych czy ustawień kont użytkowników. Oznaczenie “explicit” jest stosowane, aby umożliwić słuchaczom świadomość, że dany utwór zawiera tego typu treści, a także pozwala platformom takim jak Spotify, Apple Music, czy YouTube dostosować swoje rekomendacje do preferencji i ustawień użytkowników. Tego rodzaju etykieta jest szczególnie ważna w kontekście młodszych odbiorców, którzy mogą być narażeni na treści nieodpowiednie dla ich wieku. Chociaż utwory explicit mogą budzić kontrowersje, są również popularne wśród dorosłych słuchaczy, którzy cenią sobie artystyczną swobodę wyrażania emocji i opinii bez cenzury. Często artyści, którzy decydują się na takie oznaczenie, korzystają z tej swobody, by przekazać swoje prawdziwe, autentyczne doświadczenia, co może przyciągnąć uwagę szerokiej publiczności.</p>
+<iframe src="Plot10.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Średnia liczba odtworzeń piosenek z przekleństwami i bez przekleństw jest zbliżona, co wskazuje, że obecność przekleństw w tekstach utworów nie ma większego wpływu na ich popularność. Obydwie kategorie osiągają porównywalne wyniki, co sugeruje, że ten aspekt nie jest kluczowym czynnikiem decydującym o liczbie odtworzeń.</p>
+</section>
+<section id="pochodzenie-artystów" class="level3">
+<h3 class="anchored" data-anchor-id="pochodzenie-artystów">Pochodzenie artystów</h3>
+<p>Pochodzenie artystów ma istotny wpływ na ich twórczość, kariery i styl muzyczny. Może obejmować zarówno miejsce narodzin, jak i środowisko społeczne, w którym dorastali. Wpływa to na ich podejście do muzyki, wybór tematów i technik wykonania. Artysta wychowany w rodzinie muzycznej często ma większe szanse na rozwój kariery, mając dostęp do instrumentów i tradycji. Współczesna branża muzyczna umożliwia artystom wykorzystywanie swojego pochodzenia w celu wyróżnienia się i budowania tożsamości artystycznej, często tworząc narrację opartą na kulturze, historii czy doświadczeniach związanych z miejscem pochodzenia.</p>
+<iframe src="Plot11.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Mapa pokazuje, że największa liczba artystów pochodzi ze Stanów Zjednoczonych, co wyróżnia je jako główny ośrodek muzyczny na świecie. W innych częściach globu liczba artystów jest znacznie mniejsza, jednak obecność artystów w wielu krajach wskazuje na globalny charakter przemysłu muzycznego. Dominacja jednego regionu nie oznacza jednak wyłączności, ponieważ artyści pojawiają się w różnych zakątkach świata.</p>
+</section>
+<section id="płeć-artysty" class="level3">
+<h3 class="anchored" data-anchor-id="płeć-artysty">Płeć artysty</h3>
+<p>Płeć artystów ma wpływ na sposób, w jaki są postrzegani w przemyśle muzycznym oraz na tematykę ich twórczości. W przeszłości mężczyźni dominowali w muzyce, a kobiety napotykały na większe trudności związane z karierą i oczekiwaniami społecznymi. Choć dziś scena muzyczna jest bardziej otwarta, wciąż istnieją różnice w postrzeganiu muzyki tworzona przez mężczyzn i kobiety. Wielu artystów, niezależnie od płci, łamie stereotypy, tworząc muzykę, która wykracza poza tradycyjne role przypisane do ich płci. Zamiast skupiać się tylko na emocjach czy relacjach, jak to bywało w przeszłości, artyści podejmują różnorodne tematy, zmieniając sposób odbioru ich twórczości.</p>
+<iframe src="Plot12.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>W branży muzycznej większość artystów stanowią mężczyźni, którzy zajmują ponad trzy czwarte całkowitego udziału. Kobiety stanowią mniejszą, choć znaczącą część, co wskazuje na ich obecność w branży, ale również na istnienie nierównowagi płci wśród artystów.</p>
+<iframe src="Plot13.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Średnia liczba odtworzeń na Spotify różni się w zależności od płci artysty i kraju pochodzenia. Artyści z Australii oraz Stanów Zjednoczonych osiągają najwyższą średnią liczbę odtworzeń, niezależnie od płci, co wskazuje na ich silną obecność na platformie. Kobiety z Kanady, Anglii i Szwecji mają wyraźnie wyższą średnią liczbę odtworzeń w porównaniu do mężczyzn z tych krajów, co może świadczyć o ich popularności w tych regionach. Z kolei w Puerto Rico oraz Szkocji mężczyźni dominują pod względem średniej liczby odtworzeń, co może wynikać z większego zainteresowania lokalną muzyką wykonywaną przez męskich artystów. W Meksyku i Kolumbii różnice między płciami są mniej wyraźne, co sugeruje bardziej zrównoważoną popularność artystów obu płci. Kraje takie jak Francja charakteryzują się stosunkowo niską średnią liczbą odtworzeń dla obu płci, co może wskazywać na mniejszą globalną widoczność artystów z tego regionu na Spotify.</p>
+<iframe src="Plot14.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Średnia liczba wyświetleń na YouTube różni się w zależności od płci artysty i kraju pochodzenia. Artyści z Australii oraz Stanów Zjednoczonych osiągają najwyższe wyniki, przy czym w Australii kobiety są wyraźnie bardziej popularne niż mężczyźni. W Stanach Zjednoczonych różnica między płciami jest mniej widoczna, co sugeruje równą popularność artystów obu płci na tej platformie. W krajach takich jak Francja, Meksyk i Szkocja mężczyźni dominują pod względem średniej liczby wyświetleń, co może wskazywać na większe zainteresowanie ich twórczością. Natomiast w Kanadzie i Szwecji kobiety osiągają wyraźnie wyższe wyniki, co może być wynikiem lokalnych preferencji muzycznych lub większej promocji artystek. W Puerto Rico średnia liczba wyświetleń jest stosunkowo niska, szczególnie w przypadku kobiet, co może sugerować mniejsze zainteresowanie tamtejszymi artystami na YouTube.</p>
+<section id="wnioski-3" class="level4">
+<h4 class="anchored" data-anchor-id="wnioski-3">Wnioski</h4>
+<p>Analiza branży muzycznej pokazuje, że większość artystów stanowią mężczyźni, podczas gdy kobiety, choć w mniejszości, wyróżniają się popularnością w niektórych regionach. Średnia liczba odtworzeń na Spotify jest najwyższa dla artystów z Australii i Stanów Zjednoczonych, przy czym w krajach takich jak Kanada, Anglia czy Szwecja kobiety przewyższają mężczyzn pod względem popularności. Z kolei w Puerto Rico, Szkocji i Meksyku dominują mężczyźni, co może być związane z lokalnymi preferencjami muzycznymi. Na YouTube podobne trendy są widoczne: kobiety z Australii, Kanady i Szwecji osiągają wyższe wyniki niż mężczyźni, natomiast w Meksyku, Szkocji i Francji to mężczyźni mają przewagę. Ogólnie popularność artystów zależy od złożonych czynników, takich jak płeć, region oraz globalny zasięg artystów i ich muzyki.</p>
+</section>
+</section>
+<section id="ilość-utworów" class="level3">
+<h3 class="anchored" data-anchor-id="ilość-utworów">Ilość utworów</h3>
+<p>Liczba utworów w naszym zestawieniu odnosi się do ilości piosenek danego artysty, które znalazły się w analizowanych danych. Wartość ta nie odzwierciedla całkowitej dyskografii artysty, lecz wskazuje na jego obecność i popularność w ramach wybranego zestawu informacji. Analiza tego wskaźnika pozwala zidentyfikować artystów, których twórczość najczęściej pojawia się w naszym zbiorze, co może świadczyć o ich wpływie na współczesną muzykę oraz o popularności na platformach streamingowych.</p>
+<iframe src="Plot15.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Porównanie liczby utworów oraz odtworzeń na YouTube i Spotify dla dziesięciu najpopularniejszych artystów pokazuje interesujące zależności. Artyści z większą liczbą utworów nie zawsze osiągają najwyższą liczbę odtworzeń, co wskazuje, że jakość i popularność poszczególnych piosenek odgrywają większą rolę niż sama liczba wydanych utworów. Najwyższe wartości odtworzeń, zarówno na YouTube, jak i Spotify, są osiągane przez artystów znajdujących się w centralnej i górnej części zestawienia, co sugeruje, że ich twórczość cieszy się dużą popularnością na obu platformach. Z kolei artyści z mniejszą liczbą utworów, ale wysoką liczbą odtworzeń, mogą wskazywać na globalne hity, które zdobyły ogromną popularność. Różnice w liczbie odtworzeń na obu platformach mogą wynikać z różnic w preferencjach użytkowników YouTube i Spotify, takich jak sposób konsumpcji treści, dostępność teledysków czy różnorodność bibliotek muzycznych. Dane te podkreślają, że sukces artystów nie zależy wyłącznie od ilości wydanej muzyki, ale także od ich zdolności do przyciągania szerokiej publiczności na różnych platformach.</p>
+</section>
+<section id="wyświetlenia-i-odsłuchania" class="level3">
+<h3 class="anchored" data-anchor-id="wyświetlenia-i-odsłuchania">Wyświetlenia i odsłuchania</h3>
+<p>Wyświetlenia i odsłuchania to kluczowe metryki w ocenie popularności artystów na platformach streamingowych. Na YouTube wyświetlenia oznaczają liczbę razy, kiedy wideo zostało obejrzane, natomiast na Spotify odsłuchania odnoszą się do liczby razy, gdy utwór został odtworzony przez użytkowników. Obie platformy stanowią ważne narzędzia w budowaniu zasięgu artystów, umożliwiając dotarcie do szerokiego grona słuchaczy i fanów.</p>
+<iframe src="Plot16.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>YouTube osiągnęło szczyt popularności wcześniej niż Spotify, jednak jego popularność spadła znacznie szybciej. Spotify, w przeciwieństwie do YouTube, utrzymuje wyższą popularność nawet po swoim szczytowym okresie. Obie platformy zanotowały gwałtowny wzrost popularności po 2000 roku, co wiąże się z rozwojem technologii cyfrowych i zmianą sposobu konsumpcji muzyki. Trend wskazuje na przesunięcie preferencji użytkowników z YouTube na bardziej wyspecjalizowane platformy muzyczne, takie jak Spotify.</p>
+</section>
+<section id="subskrybcje-i-miesięczne-odsłuchania" class="level3">
+<h3 class="anchored" data-anchor-id="subskrybcje-i-miesięczne-odsłuchania">Subskrybcje i miesięczne odsłuchania</h3>
+<p>Platformy takie jak YouTube i Spotify odgrywają kluczową rolę w promocji muzyki i budowaniu popularności artystów. Liczba wyświetleń na YouTube odzwierciedla zaangażowanie widzów w wizualny aspekt utworów, natomiast odsłuchania wskazują na częstotliwość, z jaką odbiorcy wracają do muzyki. Porównanie tych dwóch wskaźników pozwala zrozumieć, jakie czynniki – takie jak styl muzyczny, teledyski czy trendy kulturowe – wpływają na sukces artystów i ich utworów na obu platformach.</p>
+<iframe src="Plot17.html" width="100%" height="600px" frameborder="0">
+</iframe>
+<p>Na podstawie wykresu można zauważyć, że istnieje pewna korelacja między liczbą subskrypcji na YouTube a liczbą miesięcznych słuchaczy na Spotify. Artyści z większą liczbą subskrybentów na YouTube mają tendencję do posiadania większej liczby miesięcznych słuchaczy na Spotify, choć nie jest to reguła dla wszystkich przypadków. Większość danych skupia się w przedziałach niższych wartości obu wskaźników, co sugeruje, że większość artystów osiąga umiarkowaną popularność na obu platformach. Jednak pojedyncze punkty w górnej części wykresu wskazują na artystów o wyjątkowej popularności, którzy dominują zarówno na YouTube, jak i na Spotify. Kolorystyka punktów dodatkowo podkreśla zróżnicowanie w wartościach, co wskazuje na istnienie artystów osiągających sukces w różnym stopniu na obu platformach.</p>
+</section>
+</section>
+<section id="wnioski-4" class="level2">
+<h2 class="anchored" data-anchor-id="wnioski-4">Wnioski</h2>
+<p>Współczesny krajobraz muzyczny charakteryzuje się ogromną różnorodnością gatunków, formatów i preferencji, co odzwierciedla złożoność przemysłu muzycznego i jego globalny zasięg. Gatunki takie jak „pop”, „dance-pop”, „hip hop” i „reggaeton” dominują na platformach streamingowych i video, przyciągając szerokie grono odbiorców dzięki uniwersalnemu charakterowi i emocjonalnemu przekazowi. Jednocześnie bardziej niszowe style, jak „alt-pop” czy „stoner rock”, mają swoje oddane, choć mniejsze grupy słuchaczy. Analiza wskazuje, że tempo i długość utworów odgrywają kluczową rolę w ich odbiorze – najpopularniejsze są dynamiczne utwory o długości od 3 do 4 minut, co świadczy o dostosowaniu muzyki do preferencji słuchaczy. Sukces artystów w dużej mierze zależy od ich zdolności adaptacji do współczesnych trendów i obecności na platformach takich jak YouTube czy Spotify. Młodsi artyści, a także nagrania wydane po 2000 roku, cieszą się znacznie większą popularnością, co podkreśla znaczenie nowoczesnych form dystrybucji i zmieniających się oczekiwań odbiorców. Pomimo dominacji globalnych gigantów, takich jak Universal i Sony, niezależni twórcy odgrywają istotną rolę, co podkreśla różnorodność źródeł muzyki. Sukces artystów nie zawsze zależy od ilości wydanej muzyki – często kluczowe są pojedyncze hity przyciągające uwagę szerokiej publiczności. Platformy, takie jak YouTube i Spotify, różnią się w sposobie przyciągania użytkowników: YouTube, choć szybciej osiągnął szczyt popularności, ustępuje miejsca Spotify, które utrzymuje wyższy poziom zainteresowania dzięki wyspecjalizowanej ofercie muzycznej. Mimo to korelacja między subskrypcjami na YouTube a miesięcznymi słuchaczami na Spotify sugeruje, że obecność na obu platformach jest istotnym czynnikiem sukcesu artystów. Dominacja artystów z krajów takich jak Stany Zjednoczone, Meksyk czy Indie podkreśla globalny charakter rynku muzycznego, a różnice w popularności związane z płcią, gatunkami i regionami wskazują na różnorodność preferencji słuchaczy. Ogólnie rzecz biorąc, analiza danych ukazuje przemysł muzyczny jako dynamiczny ekosystem, w którym uniwersalne melodie i nowoczesne trendy współistnieją z bardziej alternatywnymi stylami, tworząc zróżnicowany obraz współczesnej muzyki.</p>
+</section>
+<section id="źródła" class="level2">
+<h2 class="anchored" data-anchor-id="źródła">Źródła</h2>
+<p><a href="https://www.youtube.com" class="uri">https://www.youtube.com</a></p>
+<p>developer.spotify.com</p>
+<p><a href="https://kworb.net/spotify/country/global_weekly_totals.html">https://kworb.net</a></p>
+<p><a href="https://songbpm.com" class="uri">https://songbpm.com</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Main_Page">https://en.wikipedia.org</a></p>
+</section>
+<section id="dane-kontaktowe" class="level2">
+<h2 class="anchored" data-anchor-id="dane-kontaktowe">Dane Kontaktowe</h2>
+<ul>
+<li><strong>Email</strong>: s103006@pollub.edu.pl</li>
+<li><strong>GitHub</strong>: <a href="https://github.com/KsaweryTrebacz" target="_blank"><img src="podpis.svg" width="196" height="53"> </a></li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = true;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

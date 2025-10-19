@@ -1,0 +1,905 @@
+---
+title: "projekt"
+output: html_document
+date: "2024-10-23"
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(spotifyr)
+library(dplyr)
+library(tidyverse)
+library(tidyr)
+library(rvest)
+library(stringr)
+
+```
+
+Main DF:
+
+```{r}
+library(spotifyr)
+library(dplyr)
+library(tidyverse)
+library(tidyr)
+
+Sys.setenv(SPOTIFY_CLIENT_ID = "x")
+Sys.setenv(SPOTIFY_CLIENT_SECRET = "x")
+access_token <- get_spotify_access_token()
+
+playlist_id <- "x"
+playlist_tracks <- get_playlist_tracks(playlist_id)
+
+get_playlist_tracks_batch <- function(playlist_id, limit = 100, offset = 0) 
+  {
+  get_playlist_tracks(playlist_id, limit = limit, offset = offset)
+  }
+all_tracksspotify <- list()
+for (i in seq(0, 900, by = 100)) 
+  {
+  tracks_batchspotify <- get_playlist_tracks_batch(playlist_id, limit = 100, offset = i)
+  all_tracksspotify <- append(all_tracksspotify, list(tracks_batchspotify))
+  }
+all_tracksspotify <- bind_rows(all_tracksspotify)
+all_tracksspotify2 <- all_tracksspotify[,-c(1:10, 11:14, 16:17, 19:20, 22:30, 33:40)]
+
+all_tracksspotify2$minutes <- floor(all_tracksspotify2$track.duration_ms/60000)
+all_tracksspotify2$seconds <- round((all_tracksspotify2$track.duration_ms %% 60000) / 1000)
+all_tracksspotify2$track.duration_min <- sprintf("%02d:%02d", all_tracksspotify2$minutes, all_tracksspotify2$seconds)
+all_tracksspotify2 <- all_tracksspotify2[,-c(2, 6, 7)]
+
+all_tracksspotify2 <- all_tracksspotify2[,-1]
+
+all_tracksspotify2$is_feat <- sapply(all_tracksspotify$track.artists, function(artist) nrow(artist) > 1)
+all_tracksspotify2$track.feat.artists <- sapply(all_tracksspotify$track.artists, function(artist) paste(artist$name, collapse = ", "))
+all_tracksspotify2 <- all_tracksspotify2[,-5]
+
+all_tracksspotify2$track.feat.artists <- gsub("^[^,]*,|^[^,]*$", "", all_tracksspotify2$track.feat.artists)
+
+all_tracksspotify2$track.artist <- sapply(all_tracksspotify$track.artist, function(artist) artist$name[1])
+
+all_tracksspotify2$track.artist.id <- sapply(all_tracksspotify$track.artists, function(artist) artist$id[1])
+
+```
+
+```{r}
+library(dplyr)
+library(rvest)
+library(stringr)
+
+get_artist_birthdate <- function(artist_name) {
+  artist_name_url <- gsub(" ", "_", artist_name)
+  url <- paste0("https://en.wikipedia.org/wiki/", artist_name_url)
+  
+  page <- tryCatch(read_html(url), error = function(e) NA)
+  if (!is.na(page)) {
+    birth_date <- page %>%
+      html_nodes(xpath = "//span[@class='bday']") %>%
+      html_text() %>%
+      .[1]
+    if (!is.na(birth_date) && birth_date != "") {
+      return(birth_date)
+    }
+  }
+  url_musician <- paste0("https://en.wikipedia.org/wiki/", artist_name_url, "_(musician)")
+  page_musician <- tryCatch(read_html(url_musician), error = function(e) NA)
+  if (!is.na(page_musician)) {
+    birth_date <- page_musician %>%
+      html_nodes(xpath = "//span[@class='bday']") %>%
+      html_text() %>%
+      .[1]
+    if (!is.na(birth_date) && birth_date != "") {
+      return(birth_date)
+    }
+  }
+  return(NA)
+}
+unique_artists <- unique(all_tracksspotify2$track.artist)
+artist_birthdates <- vector("character", length(unique_artists))
+for (i in seq_along(unique_artists)) {
+  artist_birthdates[i] <- get_artist_birthdate(unique_artists[i])
+}
+artist_birthdates_df <- data.frame(
+  track.artist = unique_artists,
+  track.artist.born = artist_birthdates  
+)
+all_tracksspotify2 <- left_join(all_tracksspotify2, artist_birthdates_df, by = "track.artist")
+```
+
+```{r}
+all_tracksspotify2$track.id <- all_tracksspotify$track.id
+```
+
+```{r}
+library(dplyr)
+library(lubridate)
+
+all_tracksspotify2$track.album.release_date <- as.Date(all_tracksspotify2$track.album.release_date)
+calculate_age_at_release <- function(birth_date, release_date) {
+  if (is.na(birth_date) || is.na(release_date)) {
+    return(NA)
+  }
+  age <- interval(birth_date, release_date) / years(1)
+  return(floor(age))
+}
+all_tracksspotify2$track.artist.born <- as.Date(all_tracksspotify2$track.artist.born) #to działa czasami, mozna dopisac .y
+all_tracksspotify2$artist_age_at_release <- mapply(
+  calculate_age_at_release,
+  all_tracksspotify2$track.artist.born,
+  all_tracksspotify2$track.album.release_date
+)
+```
+
+```{r}
+library(dplyr)
+library(lubridate)
+
+all_tracksspotify2$track.album.release_date <- as.Date(all_tracksspotify2$track.album.release_date)
+if (any(is.na(all_tracksspotify2$track.album.release_date))) {
+  cat("Uwaga: Istnieją puste wartości lub niepoprawne formaty w `track.album.release_date`\n")
+}
+calculate_age_at_release <- function(birth_date, release_date) {
+  if (is.na(birth_date) || is.na(release_date)) {
+    return(NA)
+  }
+  age <- interval(birth_date, release_date) / years(1)
+  return(floor(age))
+}
+if (!all(is.na(all_tracksspotify2$track.artist.born.y))) {
+  all_tracksspotify2$track.artist.born <- as.Date(all_tracksspotify2$track.artist.born.y, format = "%Y-%m-%d")
+} else {
+  cat("Uwaga: Wszystkie wartości w `track.artist.born.y` są puste lub niezgodne z formatem daty.\n")
+}
+if (all(is.na(all_tracksspotify2$track.artist.born))) {
+  stop("Błąd: Kolumna `track.artist.born` zawiera same wartości NA. Sprawdź źródłowe dane `track.artist.born.y`.")
+}
+if (length(all_tracksspotify2$track.artist.born) != nrow(all_tracksspotify2)) {
+  stop("Błąd: Kolumna `track.artist.born` ma niezgodną liczbę wierszy.")
+}
+all_tracksspotify2$artist_age_at_release <- mapply(
+  calculate_age_at_release,
+  all_tracksspotify2$track.artist.born,
+  all_tracksspotify2$track.album.release_date
+)
+```
+
+```{r}
+library(stringr)
+all_tracksspotify2$track.name <- gsub("\\(.*?\\)","", all_tracksspotify2$track.name)
+all_tracksspotify2$track.name <- gsub("\\[.*?\\]","", all_tracksspotify2$track.name)
+```
+
+```{r}
+library(stringr)
+all_tracksspotify2$track.name.2 <- str_to_title(all_tracksspotify2$track.name)
+all_tracksspotify2$track.name.2 <- sub("\\?", "%3F", all_tracksspotify2$track.name.2)
+all_tracksspotify2$track.name.2 <- sub("\\'", "%27", all_tracksspotify2$track.name.2)
+```
+
+```{r}
+all_tracksspotify2$track.feat.artists <- gsub("\\s+$", "", all_tracksspotify2$track.feat.artists)
+all_tracksspotify2$track.artist <- gsub("\\s+$", "", all_tracksspotify2$track.artist)
+all_tracksspotify2$track.name <- gsub("\\s+$", "", all_tracksspotify2$track.name)
+all_tracksspotify2$track.name.2 <- gsub("\\s+$", "", all_tracksspotify2$track.name.2)
+```
+
+```{r}
+library(rvest)
+library(dplyr)
+library(stringr)
+
+get_song_genre <- function(song_title, artist_name, feat_artist_name = NULL) {
+  fetch_genre <- function(url) {
+    page <- tryCatch(read_html(url), error = function(e) NA)
+    if (!is.na(page)) {
+        genre <- page %>%
+            html_nodes(xpath = "//th[contains(., 'Genre')]/following-sibling::td") %>%
+            html_text() %>%
+            .[1] %>%
+            trimws()
+        genre <- str_replace_all(genre, "\\s*/\\s*", ", ")
+        if (!is.na(genre) && genre != "") {
+            return(genre)
+        }
+    }
+    return(NA)
+}
+  clean_title <- function(title) {
+    title_parts <- strsplit(title, " - ")[[1]]
+    return(trimws(title_parts[1]))
+  }
+  song_title_clean <- clean_title(song_title)
+  format_title_artist <- function(title, artist, feat_artist = NULL, capitalize_title = FALSE, capitalize_artist = FALSE) {
+    words <- strsplit(title, " ")[[1]]
+    if (capitalize_title && length(words) > 1) {
+      words <- c(str_to_title(words[1]), str_to_lower(words[-c(1, length(words))]), str_to_title(words[length(words)]))
+    } else if (capitalize_title) {
+      words <- str_to_title(words)
+    } else {
+      words <- str_to_lower(words)
+    }
+    formatted_title <- paste(words, collapse = "_")
+    if (!capitalize_artist) {
+      formatted_artist <- str_to_lower(gsub(" ", "_", artist))
+      formatted_feat_artist <- if (!is.null(feat_artist)) str_to_lower(gsub(" ", "_", feat_artist)) else NULL
+    } else {
+      artist_words <- strsplit(artist, " ")[[1]]
+      feat_words <- if (!is.null(feat_artist)) strsplit(feat_artist, " ")[[1]] else NULL
+      
+      formatted_artist <- paste(c(str_to_title(artist_words[1]), str_to_lower(artist_words[-c(1, length(artist_words))]), str_to_title(artist_words[length(artist_words)])), collapse = "_")
+      formatted_feat_artist <- if (!is.null(feat_artist)) paste(c(str_to_title(feat_words[1]), str_to_lower(feat_words[-c(1, length(feat_words))]), str_to_title(feat_words[length(feat_words)])), collapse = "_") else NULL
+    }
+    
+    return(list(title = formatted_title, artist = formatted_artist, feat_artist = formatted_feat_artist))
+  }
+  urls <- list(
+    paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean), "_(", gsub(" ", "_", artist_name), ")"), 
+    paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean), "_(song)"), 
+    paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean), "_(", gsub(" ", "_", artist_name), "_song)"), 
+    paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean)) 
+
+  )
+  if (!is.null(feat_artist_name)) {
+    urls <- c(urls, paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean), "_(", 
+                           gsub(" ", "_", feat_artist_name), "_", gsub(" ", "_", artist_name), "_song)"))
+  }
+  for (url in urls) {
+    genre <- fetch_genre(url)
+    if (!is.na(genre)) {
+      return(genre)
+    }
+  }
+  formatted_data <- format_title_artist(song_title_clean, artist_name, feat_artist_name, capitalize_title = TRUE, capitalize_artist = FALSE)
+  urls <- list(
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", formatted_data$artist, ")"),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(song)"),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", formatted_data$artist, "_song)")
+  )
+  if (!is.null(feat_artist_name)) {
+    urls <- c(urls, paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", 
+                           formatted_data$feat_artist, "_", formatted_data$artist, "_song)"))
+  }
+  for (url in urls) {
+    genre <- fetch_genre(url)
+    if (!is.na(genre)) {
+      return(genre)
+    }
+  }
+  formatted_data <- format_title_artist(song_title_clean, artist_name, feat_artist_name, capitalize_title = TRUE, capitalize_artist = TRUE)
+  urls <- list(
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", formatted_data$artist, ")"),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(song)"),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", formatted_data$artist, "_song)")
+  )
+  if (!is.null(feat_artist_name)) {
+    urls <- c(urls, paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", 
+                           formatted_data$feat_artist, "_", formatted_data$artist, "_song)"))
+  }
+  for (url in urls) {
+    genre <- fetch_genre(url)
+    if (!is.na(genre)) {
+      return(genre)
+    }
+  }
+  return(NA)
+}
+all_tracksspotify2_subset <- head(all_tracksspotify2, 1000)
+all_tracksspotify2_subset$track.genre <- mapply(
+  get_song_genre,
+  all_tracksspotify2_subset$track.name.2,
+  all_tracksspotify2_subset$track.artist,
+  all_tracksspotify2_subset$track.feat.artist
+)
+all_tracksspotify2$track.genre <- all_tracksspotify2_subset$track.genre
+```
+
+```{r}
+library(rvest)
+library(dplyr)
+library(stringr)
+
+fetch_genre_for_na <- function(song_title, artist_name) {
+  song_title_clean <- trimws(song_title)
+  artist_name_clean <- trimws(artist_name)
+  
+  url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean), "_(", gsub(" ", "_", artist_name_clean), "_song)")
+    page <- tryCatch(read_html(url), error = function(e) NA)
+  if (!is.na(page)) {
+    genre <- page %>%
+      html_nodes(xpath = "//th[contains(., 'Genre')]/following-sibling::td") %>%
+      html_text() %>%
+      .[1] %>%
+      trimws()
+    if (!is.na(genre) && genre != "") {
+      return(genre)
+    }
+  }
+  return(NA)
+}
+all_tracksspotify2 <- all_tracksspotify2 %>%
+  rowwise() %>%
+  mutate(track.genre = ifelse(is.na(track.genre), fetch_genre_for_na(track.name, track.artist), track.genre))
+```
+
+```{r}
+library(rvest)
+library(dplyr)
+library(stringr)
+
+get_song_label <- function(song_title, artist_name, feat_artist_name = NULL) {
+    fetch_label <- function(url) {
+    page <- tryCatch(read_html(url), error = function(e) NA)
+    if (!is.na(page)) {
+      label <- page %>%
+        html_nodes(xpath = "//th[contains(., 'Label')]/following-sibling::td") %>%
+        html_text() %>%
+        .[1] %>%
+        trimws()
+      if (!is.na(label) && label != "") {
+        return(label)
+      }
+    }
+    return(NA)
+  }
+  clean_title <- function(title) {
+    title_parts <- strsplit(title, " - ")[[1]]
+    return(trimws(title_parts[1]))
+  }
+  song_title_clean <- clean_title(song_title)
+  format_title_artist <- function(title, artist, feat_artist = NULL, capitalize_title = FALSE, capitalize_artist = FALSE) {
+    words <- strsplit(title, " ")[[1]]
+    if (capitalize_title && length(words) > 1) {
+      words <- c(str_to_title(words[1]), str_to_lower(words[-c(1, length(words))]), str_to_title(words[length(words)]))
+    } else if (capitalize_title) {
+      words <- str_to_title(words)
+    } else {
+      words <- str_to_lower(words)
+    }
+    formatted_title <- paste(words, collapse = "_")
+    
+        if (!capitalize_artist) {
+      formatted_artist <- str_to_lower(gsub(" ", "_", artist))
+      formatted_feat_artist <- if (!is.null(feat_artist)) str_to_lower(gsub(" ", "_", feat_artist)) else NULL
+    } else {
+      artist_words <- strsplit(artist, " ")[[1]]
+      feat_words <- if (!is.null(feat_artist)) strsplit(feat_artist, " ")[[1]] else NULL
+      
+      formatted_artist <- paste(c(str_to_title(artist_words[1]), str_to_lower(artist_words[-c(1, length(artist_words))]), str_to_title(artist_words[length(artist_words)])), collapse = "_")
+      formatted_feat_artist <- if (!is.null(feat_artist)) paste(c(str_to_title(feat_words[1]), str_to_lower(feat_words[-c(1, length(feat_words))]), str_to_title(feat_words[length(feat_words)])), collapse = "_") else NULL
+    }
+    
+    return(list(title = formatted_title, artist = formatted_artist, feat_artist = formatted_feat_artist))
+  }
+
+  urls <- list(
+    paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean)),
+    paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean), "_(", gsub(" ", "_", artist_name), ")"),
+    paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean), "_(song)"), 
+    paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean), "_(", gsub(" ", "_", artist_name), "_song)")
+  )
+  if (!is.null(feat_artist_name)) {
+    urls <- c(urls, paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean), "_(", 
+                           gsub(" ", "_", feat_artist_name), "_", gsub(" ", "_", artist_name), "_song)"))
+  }
+  for (url in urls) {
+    label <- fetch_label(url)
+    if (!is.na(label)) {
+      return(label)
+    }
+  }
+  formatted_data <- format_title_artist(song_title_clean, artist_name, feat_artist_name, capitalize_title = TRUE, capitalize_artist = FALSE)
+  urls <- list(
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", formatted_data$artist, ")"),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(song)"),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", formatted_data$artist, "_song)")
+  )
+  
+  if (!is.null(feat_artist_name)) {
+    urls <- c(urls, paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", 
+                           formatted_data$feat_artist, "_", formatted_data$artist, "_song)"))
+  }
+  for (url in urls) {
+    label <- fetch_label(url)
+    if (!is.na(label)) {
+      return(label)
+    }
+  }
+  formatted_data <- format_title_artist(song_title_clean, artist_name, feat_artist_name, capitalize_title = TRUE, capitalize_artist = TRUE)
+  urls <- list(
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", formatted_data$artist, ")"),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(song)"),
+    paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", formatted_data$artist, "_song)")
+  )
+  if (!is.null(feat_artist_name)) {
+    urls <- c(urls, paste0("https://en.wikipedia.org/wiki/", formatted_data$title, "_(", 
+                           formatted_data$feat_artist, "_", formatted_data$artist, "_song)"))
+  }
+  for (url in urls) {
+    label <- fetch_label(url)
+    if (!is.na(label)) {
+      return(label)
+    }
+  }
+  return(NA)
+}
+all_tracksspotify2_subset <- head(all_tracksspotify2, 1000)
+all_tracksspotify2_subset$track.label <- sapply(1:nrow(all_tracksspotify2_subset), function(i) {
+  get_song_label(
+    all_tracksspotify2_subset$track.name.2[i],
+    all_tracksspotify2_subset$track.artist[i],
+    all_tracksspotify2_subset$track.feat.artists[i]
+  )
+})
+all_tracksspotify2$track.label <- NA
+all_tracksspotify2$track.label[1:1000] <- all_tracksspotify2_subset$track.label
+```
+
+```{r}
+{r}
+library(rvest)
+library(dplyr)
+library(stringr)
+
+fetch_label_for_na <- function(song_title, artist_name) {
+  song_title_clean <- trimws(song_title)
+  artist_name_clean <- trimws(artist_name)
+  
+  url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", song_title_clean), "_(", gsub(" ", "_", artist_name_clean), "_song)")
+    page <- tryCatch(read_html(url), error = function(e) NA)
+  if (!is.na(page)) {
+    label <- page %>%
+      html_nodes(xpath = "//th[contains(., 'Label')]/following-sibling::td") %>%
+      html_text() %>%
+      .[1] %>%
+      trimws()
+    if (!is.na(label) && label != "") {
+      return(label)
+    }
+  }
+  return(NA)
+}
+all_tracksspotify2 <- all_tracksspotify2 %>%
+  rowwise() %>%
+  mutate(track.label = ifelse(is.na(track.label), fetch_label_for_na(track.name, track.artist), track.label))
+```
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+czasami działa jak nie działa to pominac
+
+```{r}
+library(spotifyr)
+Sys.setenv(SPOTIFY_CLIENT_ID = "x")
+Sys.setenv(SPOTIFY_CLIENT_SECRET = "x")
+access_token <- get_spotify_access_token()
+
+get_track_bpm <- function(track_id) {
+  tryCatch({
+    analysis <- get_track_audio_analysis(track_id)
+    bpm <- analysis$track$tempo
+    bpm <- as.numeric(sub("\\..*$", "", bpm)) 
+    return(bpm)
+  }, error = function(e) {
+    message(paste("Błąd dla track_id:", track_id, "-", e$message))
+    return(NA)  
+  })
+}
+
+track_ids <- all_tracksspotify2$track.id[1:1000]
+
+all_tracksspotify2$tempo <- sapply(track_ids, function(id) {
+  Sys.sleep(1)  
+  get_track_bpm(id)
+})
+
+summary(all_tracksspotify2$tempo)  
+
+```
+
+```{r}
+all_tracksspotify2$tempo <- sapply(all_tracksspotify2$tempo, function(x) round(x / 5) * 5)
+```
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+```{r}
+library(rio)
+all_tracksspotify2 <- import("all_tracksspotify2.xlsx")
+colnames(all_tracksspotify2)[colnames(all_tracksspotify2) == "BPM"] <- "tempo"
+```
+
+```{r}
+library(dplyr)
+all_tracksspotify2$tempo <- as.numeric(all_tracksspotify2$tempo)
+all_tracksspotify2$tempo <- sapply(all_tracksspotify2$tempo, function(x) round(x / 5) * 5)
+```
+
+```{r}
+library(spotifyr)
+library(dplyr)
+Sys.setenv(SPOTIFY_CLIENT_ID = "x")
+Sys.setenv(SPOTIFY_CLIENT_SECRET = "x")
+access_token <- get_spotify_access_token()
+
+check_explicit <- function(track_id) {
+  track_data <- get_track(track_id)  
+  return(track_data$explicit)  
+}
+all_tracksspotify2 <- all_tracksspotify2 %>%
+  mutate(artist_explicit = sapply(track.id, check_explicit))  
+```
+
+```{r}
+all_tracksspotify2$track.genre <- tolower(all_tracksspotify2$track.genre)
+```
+
+```{r}
+library(stringr)
+library(dplyr)
+
+allowed_words <- c("synth-pop", "electropop", "new wave", "synthwave", "adult contemporary", "dancehall", "tropical house", "dream pop", "hip hop", "r&b", "arena rock", "pop rock", "chamber pop", "psychedelic pop", "alternative rock", "funk-pop", "afrobeats", "UK funky", "indie pop", "art rock", "indie rock", "industrial pop", "nu-disco", "latin pop", "dance-pop", "indie folk", "folk-pop", "soft rock", "trap-pop", "emo rap", "future bass", "psychedelic rap", "uk garage", "blues rock", "gospel-pop", "teen pop", "pop-punk", "bedroom pop", "alt-pop", "power pop", "space rock", "electro-disco", "alternative r&b","alternative hip hop", "lofi hip hop", "pop soul", "comedy hip hop", "progressive rock", "hard rock", "progressive pop", "pop-rap","progressive rap", "pop latin", "post-Britpop","reggae-pop", "bubblegum pop", "folk rock","dominican dembow", "blue-eyed soul", "baroque pop", "orchestral pop", "diva house", "post-grunge", "gothic pop", "gothic country", "alternative reggaeton", "northern soul", "guaracha electronica", "conscious hip hop", "stoner rock", "new jack swing", "hip hop soul", "trip hop", "experimental pop", "country rap", "country trap", "southern hip hop", "guitar-rock", "country pop", "hardcore hip hop", "bedroom pop", "moombahton", "neo soul", "rockabilly", "eurodance", "dirty rap", "west coast hip-hop", "philadelphia soul", "rock and roll", "deep house", "siren jam", "electro house", "k-pop", "disco-pop", "future trap", "urban sierreño", "ranchera", "drum and bass", "regional mexican", "gangsta rap", "g-funk", "merengue", "doo-wop", "nu metal", "roots rock", "swamp rock", "jersey club", "uk drill", "rhythm and blues", "rock", "folk", "drill", "disco", "funk", "trap", "dance", "bachata", "edm", "country", "soul", "rap", "emo", "reggaeton", "sandungueo", "christmas", "cumbia", "psychedelia", "lounge", "industrial", "electronic", "slowcore", "bounce", "jersey", "bhangra", "amapiano", "house", "mambo", "tropical", "pop")
+
+fix_genre <- function(genre, allowed_words) {
+  if (is.na(genre) || nchar(genre) == 0) {
+    return("")
+  }
+  
+  genre <- str_remove_all(genre, "\\[.*?\\]")
+  
+  matched_genres <- c()
+  
+  remaining_text <- genre
+  while (nchar(remaining_text) > 0) {
+    match_found <- FALSE
+    
+    for (allowed in allowed_words) {
+      if (startsWith(remaining_text, allowed)) {
+        matched_genres <- c(matched_genres, allowed)  
+        remaining_text <- str_remove(remaining_text, paste0("^", allowed)) 
+        match_found <- TRUE
+        break
+      }
+    }
+    
+    if (!match_found) {
+      remaining_text <- substr(remaining_text, 2, nchar(remaining_text))
+    }
+  }
+  
+  matched_genres <- unique(matched_genres)
+  
+  return(paste(matched_genres, collapse = ", "))
+}
+
+all_tracksspotify2 <- all_tracksspotify2 %>%
+  rowwise() %>%
+  mutate(fixed_genre = fix_genre(track.genre, allowed_words))
+
+all_tracksspotify2 <- ungroup(all_tracksspotify2)  
+
+```
+
+Artist DF:
+
+```{r}
+library(spotifyr)
+Sys.setenv(SPOTIFY_CLIENT_ID = "x")
+Sys.setenv(SPOTIFY_CLIENT_SECRET = "x")
+access_token <- get_spotify_access_token()
+playlist_id <- "x"
+playlist_tracks <- get_playlist_tracks(playlist_id)
+
+id_counts <- table(all_tracksspotify2$track.artist)
+id_counts_df <- as.data.frame(id_counts)
+colnames(id_counts_df) <- c("artist_id", "total_song_count")
+```
+
+```{r}
+library(spotifyr)
+Sys.setenv(SPOTIFY_CLIENT_ID = "x")
+Sys.setenv(SPOTIFY_CLIENT_SECRET = "x")
+access_token <- get_spotify_access_token()
+playlist_id <- "x"
+playlist_tracks <- get_playlist_tracks(playlist_id)
+
+id_counts <- table(all_tracksspotify2$track.artist.id)
+id_counts_df <- as.data.frame(id_counts)
+colnames(id_counts_df) <- c("artist", "count")
+
+get_monthly_listeners <- function(artist) {
+  artist_data <- get_artist(artist)
+  monthly_listeners <- artist_data$followers$total
+  return(monthly_listeners)
+}
+unique_artist_ids <- unique(id_counts_df$artist)
+monthly_listeners <- numeric(length(unique_artist_ids))
+for (i in seq_along(unique_artist_ids)) {
+  monthly_listeners[i] <- get_monthly_listeners(unique_artist_ids[i])
+  Sys.sleep(1)
+}
+id_counts_df$monthly_listeners <- monthly_listeners
+```
+
+```{r}
+library(spotifyr)
+get_artist_name <- function(artist_id) {
+  artist_data <- get_artist(artist_id)
+  return(artist_data$name)  
+}
+id_to_name_map <- setNames(sapply(unique(id_counts_df$artist), get_artist_name), unique(id_counts_df$artist))
+id_counts_df$artist_name <- id_to_name_map[as.character(id_counts_df$artist)]
+```
+
+```{r}
+id_counts_df$artist_name <- tolower(id_counts_df$artist_name)
+id_counts_df$artist_name <- gsub("\\b(\\w)", "\\U\\1", id_counts_df$artist_name, perl = TRUE)
+id_counts_df$artist_name <- gsub("Tv", "TV", id_counts_df$artist_name)
+id_counts_df$artist_name[5] <- gsub("k", "K", id_counts_df$artist_name[5])
+id_counts_df$artist_name[35] <- gsub("g", "G", id_counts_df$artist_name[35])
+id_counts_df$artist_name[73] <- gsub("w", "W", id_counts_df$artist_name[73])
+id_counts_df$artist_name[73] <- gsub("u", "U", id_counts_df$artist_name[73])
+id_counts_df$artist_name[260] <- gsub("b", "B", id_counts_df$artist_name[260])
+id_counts_df$artist_name[411] <- gsub("t", "T", id_counts_df$artist_name[411])
+id_counts_df$artist_name[411] <- gsub("b", "B", id_counts_df$artist_name[411])
+id_counts_df$artist_name[395] <- gsub("m", "M", id_counts_df$artist_name[395])
+id_counts_df$artist_name[391] <- gsub("j", "J", id_counts_df$artist_name[391])
+id_counts_df$artist_name[373] <- gsub("k", "K", id_counts_df$artist_name[373])
+id_counts_df$artist_name[343] <- gsub("f", "F", id_counts_df$artist_name[343])
+id_counts_df$artist_name[329] <- gsub("p", "P", id_counts_df$artist_name[329])
+id_counts_df$artist_name[323] <- gsub("j", "J", id_counts_df$artist_name[323])
+id_counts_df$artist_name[302] <- toupper(id_counts_df$artist_name[302])
+id_counts_df$artist_name[280] <- gsub("j", "J", id_counts_df$artist_name[280])
+id_counts_df$artist_name[147] <- gsub("a", "A", id_counts_df$artist_name[147])
+id_counts_df$artist_name[109] <- gsub("s", "S", id_counts_df$artist_name[109])
+id_counts_df$artist_name[109] <- gsub("r", "R", id_counts_df$artist_name[109])
+id_counts_df$artist_name[74] <- gsub("n", "N", id_counts_df$artist_name[74])
+id_counts_df$artist_name[74] <- gsub("w", "W", id_counts_df$artist_name[74])
+```
+
+```{r}
+library(rvest)
+library(dplyr)
+library(stringr)
+
+get_artist_country <- function(artist_name) {
+  artist_url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", artist_name))
+  artist_singer_url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", artist_name), "_(singer)")
+  artist_producers_url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", artist_name), "_(producers)")
+  artist_dj_url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", artist_name), "_(DJ)")
+  artist_musician_url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", artist_name), "_(musician)")
+  artist_rapper_url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", artist_name), "_(rapper)")
+  artist_band_url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", artist_name), "_(band)")
+  artist_group_url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", artist_name), "_(group)")
+  artist_record_producer_url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", artist_name), "_(record_producer)") 
+  artist_singer_songwriter_url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", artist_name), "_(singer-songwriter)")  
+  
+  fetch_country <- function(url) {
+    page <- tryCatch(read_html(url), error = function(e) NA)
+    if (!is.na(page)) {
+      country <- page %>%
+        html_nodes(xpath = "//th[contains(., 'Origin') or contains(., 'Born')]/following-sibling::td") %>%
+        html_text() %>%
+        .[1] %>%
+        str_trim()
+      if (!is.na(country) && country != "") {
+        return(country)
+      }
+    }
+    return(NA)
+  }
+  country <- fetch_country(artist_url)
+  if (!is.na(country)) return(country)
+  
+  country <- fetch_country(paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", tolower(artist_name))))
+  if (!is.na(country)) return(country)
+  
+  artist_cap <- str_to_title(artist_name)
+  country <- fetch_country(paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", artist_cap)))
+  if (!is.na(country)) return(country)
+  
+  country <- fetch_country(artist_producers_url)
+  if (!is.na(country)) return(country)
+  
+  country <- fetch_country(artist_singer_url)
+  if (!is.na(country)) return(country)
+  
+  country <- fetch_country(artist_dj_url)
+  if (!is.na(country)) return(country)
+  
+  country <- fetch_country(artist_musician_url)
+  if (!is.na(country)) return(country)
+  
+  country <- fetch_country(artist_rapper_url)
+  if (!is.na(country)) return(country)
+  
+  country <- fetch_country(artist_band_url)
+  if (!is.na(country)) return(country)
+  
+  country <- fetch_country(artist_group_url)
+  if (!is.na(country)) return(country)
+
+  country <- fetch_country(artist_record_producer_url)
+  if (!is.na(country)) return(country)
+  
+  country <- fetch_country(artist_singer_songwriter_url)
+  if (!is.na(country)) return(country)
+
+    return(NA)
+}
+id_counts_df$artist_country <- sapply(id_counts_df$artist_name, get_artist_country)
+```
+
+```{r}
+library(stringr)
+country <- c("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", 
+             "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", 
+             "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", 
+             "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", 
+             "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", 
+             "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", 
+             "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", 
+             "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", 
+             "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia","England", "Eswatini", "Ethiopia", 
+             "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", 
+             "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", 
+             "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", 
+             "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", 
+             "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", 
+             "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", 
+             "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", 
+             "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", 
+             "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", 
+             "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", 
+             "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", 
+             "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", 
+             "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", 
+             "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", 
+             "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", 
+             "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", 
+             "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", 
+             "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", 
+             "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", 
+             "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", 
+             "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", 
+             "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", 
+             "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe", "U.S", "US", "Puerto Rico", "Scotland", "Kosovo")
+
+pattern <- paste0("\\b(", paste(country, collapse = "|"), ")\\b")
+usun_spoza_bazy <- function(tekst, pattern) {
+  wynik <- str_extract_all(tekst, pattern) %>%
+    unlist()
+  if (length(wynik) == 0) {
+    return(NA)
+  }
+  wynik <- paste(wynik, collapse = " ")
+  return(wynik)
+}
+id_counts_df$artist_country_filtered <- sapply(id_counts_df$artist_country, function(x) usun_spoza_bazy(x, pattern))
+```
+
+```{r}
+library(rvest)
+library(dplyr)
+library(stringr)
+
+get_artist_gender <- function(artist_name) {
+  base_url <- "https://en.wikipedia.org/wiki/"
+  artist_name_url <- gsub(" ", "_", artist_name)
+  
+  urls <- c(
+    paste0(base_url, artist_name_url),
+    paste0(base_url, artist_name_url, "_(singer)"),
+    paste0(base_url, artist_name_url, "_(musician)"),
+    paste0(base_url, artist_name_url, "_(rapper)"),
+    paste0(base_url, artist_name_url, "_(record_producer)"),
+    paste0(base_url, artist_name_url, "_(DJ)"),
+    paste0(base_url, artist_name_url, "_(band)"),
+    paste0(base_url, artist_name_url, "_(group)"),
+    paste0(base_url, artist_name_url, "_(singer-songwriter)")
+  )
+  
+  gender <- "unknown"
+  
+  for (url in urls) {
+    Sys.sleep(runif(1, 0.5, 1.5))  
+    page <- tryCatch(read_html(url), error = function(e) NULL)
+    
+    if (!is.null(page)) {
+      paragraphs <- c(
+        page %>% html_node(xpath = "//html/body/div[2]/div/div[3]/main/div[3]/div[3]/div[1]/p[2]") %>% html_text(trim = TRUE),
+        page %>% html_node(xpath = "//html/body/div[2]/div/div[3]/main/div[3]/div[3]/div[1]/p[3]") %>% html_text(trim = TRUE)
+      )
+      
+      for (paragraph in paragraphs) {
+        if (!is.na(paragraph)) {
+          he_count <- str_count(paragraph, "\\b(he|his|He|His)\\b")
+          she_count <- str_count(paragraph, "\\b(she|her|She|Her)\\b")
+          
+          if (he_count > she_count) {
+            gender <- "male"
+            break
+          } else if (she_count > he_count) {
+            gender <- "female"
+            break
+          }
+        }
+      }
+      
+      if (gender != "unknown") {
+        break
+      }
+    }
+  }
+  
+  return(gender)
+}
+
+id_counts_df <- id_counts_df %>%
+  mutate(artist_gender = sapply(artist_name, get_artist_gender))
+
+```
+
+```{r}
+library(rvest)
+library(dplyr)
+library(stringr)
+
+get_artist_type <- function(artist_name) {
+  base_url <- "https://en.wikipedia.org/wiki/"
+  artist_name_url <- gsub(" ", "_", artist_name)
+  
+  urls <- c(
+    paste0(base_url, artist_name_url),
+    paste0(base_url, artist_name_url, "_(singer)"),
+    paste0(base_url, artist_name_url, "_(musician)"),
+    paste0(base_url, artist_name_url, "_(rapper)"),
+    paste0(base_url, artist_name_url, "_(record_producer)"),
+    paste0(base_url, artist_name_url, "_(DJ)"),
+    paste0(base_url, artist_name_url, "_(band)"),
+    paste0(base_url, artist_name_url, "_(group)"),
+    paste0(base_url, artist_name_url, "_(singer-songwriter)")
+  )
+  
+  artist_type <- "artist"  
+  
+  for (url in urls) {
+    Sys.sleep(runif(1, 0.5, 1.5))  
+    page <- tryCatch(read_html(url), error = function(e) NULL)
+    
+    if (!is.null(page)) {
+      first_paragraph <- page %>%
+        html_node(xpath = "//html/body/div[2]/div/div[3]/main/div[3]/div[3]/div[1]/p[2]") %>%
+        html_text(trim = TRUE)
+      
+      if (!is.na(first_paragraph)) {
+        if (str_detect(tolower(first_paragraph), "\\b(band|group)\\b")) {
+          artist_type <- "group"
+          break
+        }
+      }
+    }
+  }
+  
+  return(artist_type)
+}
+
+id_counts_df <- id_counts_df %>%
+  mutate(artist_type = sapply(artist_name, get_artist_type))
+```
+
+------------------------------------------------------------------------
+
+```{r}
+library(openxlsx)
+write.xlsx(all_tracksspotify2, "all_tracksspotify2.xlsx")
+```
